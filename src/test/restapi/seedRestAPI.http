@@ -1,0 +1,32 @@
+###뿌리기API
+POST http://localhost:8080/v1/seeds
+Content-Type: application/json;charset=UTF-8
+X-USER-ID: 1
+X-ROOM-ID: room1
+
+{
+  "seedingAmount" : 1000,
+  "receivedPersonCount": 3
+}
+
+###받기API
+PUT http://localhost:8080/v1/seeds
+Content-Type: application/json;charset=UTF-8
+X-USER-ID: 1
+X-ROOM-ID: room1
+
+{
+  "seedingAmount" : 1000,
+  "receivedPersonCount": 3
+}
+
+###조회 API
+GET http://localhost:8080/v1/seeds
+ ?token=AmR
+Content-Type: application/json;charset=UTF-8
+X-USER-ID: 1
+X-ROOM-ID: room1
+
+###
+
+
