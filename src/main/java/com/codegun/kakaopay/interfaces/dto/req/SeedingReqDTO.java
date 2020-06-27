@@ -4,16 +4,16 @@ import com.codegun.kakaopay.domain.seed.Seed;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 public class SeedingReqDTO {
-    @NonNull
+    @NotNull
     private long seedingAmount;
-    @NonNull
+    @NotNull
     private int receivedPersonCount;
 
     @Builder

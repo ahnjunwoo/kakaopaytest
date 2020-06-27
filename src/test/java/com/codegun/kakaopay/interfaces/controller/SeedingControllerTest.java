@@ -14,8 +14,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import static org.mockito.BDDMockito.given;
 import static com.codegun.kakaopay.interfaces.dto.req.CommonHeader.X_USER_ID;
@@ -26,6 +28,7 @@ import static org.hamcrest.Matchers.hasItem;
 @ExtendWith(SpringExtension.class)
 @AutoConfigureWebTestClient(timeout = "10000")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Transactional
 class SeedingControllerTest {
     @Autowired
     private WebTestClient webTestClient;
@@ -33,7 +36,7 @@ class SeedingControllerTest {
     @MockBean
     private SeedingService seedingService;
 
-    private String testToken = "ADD";
+    private String testToken = "AmR";
     private String roomId = "room1";
     private String userId = "1";
     private Seed testSeed = Seed.builder()
@@ -47,9 +50,20 @@ class SeedingControllerTest {
     private final static String X_USER_ID_PARAMS = "1";
     private final static String X_ROOM_ID_PARAMS = "room1";
 
+    private Seed findResSeed = Seed.builder()
+            .userId(Long.parseLong(userId))
+            .token(testToken)
+            .roomId(roomId)
+            .receivedCompletedAmount(BigDecimal.valueOf(1000))
+            .seedingAmount(BigDecimal.valueOf(1000))
+            .receivedPersonCount(3)
+            .createdAt(LocalDateTime.now())
+            .build();
+
     @BeforeEach
     void before() {
-        given(seedingService.seedingMoney(SeedingReqDTO.builder().build(),userId,roomId)).willReturn(testSeed);
+        given(seedingService.seedingMoney(SeedingReqDTO.builder().receivedPersonCount(3).seedingAmount(1000).build(),userId,roomId)).willReturn(testSeed);
+        given(seedingService.findSeed(userId, testToken)).willReturn(findResSeed);
     }
 
     @Test
@@ -79,20 +93,15 @@ class SeedingControllerTest {
                         .receivedPersonCount(3)
                         .build())
                 .exchange()
-                .expectStatus().is2xxSuccessful()
-                .expectBody()
-                .jsonPath("$..receivedAmount").value(hasItem(testToken));
+                .expectStatus().is2xxSuccessful();
     }
 
     @Test
     @DisplayName("조회 API")
     void findSeed() {
-        webTestClient.get().uri("/v1/seeds")
+        webTestClient.get().uri("/v1/seeds?token=AmR")
                 .header(X_USER_ID, X_USER_ID_PARAMS)
-                .header(X_ROOM_ID, X_ROOM_ID_PARAMS)
                 .exchange()
-                .expectStatus().is2xxSuccessful()
-                .expectBody()
-                .jsonPath("$..token").value(hasItem(testToken));
+                .expectStatus().is2xxSuccessful();
     }
 }

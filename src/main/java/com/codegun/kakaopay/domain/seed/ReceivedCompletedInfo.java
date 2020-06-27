@@ -1,11 +1,12 @@
 package com.codegun.kakaopay.domain.seed;
 
-import com.codegun.kakaopay.domain.IdentifiedValueObject;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
@@ -14,7 +15,10 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = false)
 @Getter
 @NoArgsConstructor
-public class ReceivedCompletedInfo extends IdentifiedValueObject {
+public class ReceivedCompletedInfo{
+    @Id
+    @GeneratedValue
+    private Long id;
     private String receivedUserId;
     private BigDecimal receivedAmount;
 

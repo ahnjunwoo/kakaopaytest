@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: kakaopay
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://database-1.cneixz0tvwnm.ap-northeast-2.rds.amazonaws.com/seeding?verifyServerCertificate=false&useSSL=false&requireSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: kakao
+    password: kakaotest
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+    properties:
+      hibernate:
+        show-sql: true
+        format_sql: true
+        use_sql_comments: true
+        dialect: org.hibernate.dialect.MySQL55Dialect
+        jdbc:
+          batch_size: 100
+    generate-ddl: true

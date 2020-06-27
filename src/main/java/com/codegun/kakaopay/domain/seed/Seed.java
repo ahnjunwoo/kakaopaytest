@@ -137,6 +137,6 @@ public class Seed {
     }
 
     public boolean isNotSeedingEffectiveTime() {
-        return this.createdAt.isBefore(LocalDateTime.now().plusMinutes(10));
+        return this.createdAt.isAfter(LocalDateTime.now().plusMinutes(10));
     }
 }
